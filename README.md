@@ -9,6 +9,10 @@ en Córdoba capital. HTML, CSS y un archivo JS. Sin build, sin dependencias.
 
 - Diseño responsive real. El anterior se rompía en celular, donde está el 80% del tráfico.
 - Logo nuevo (el de Instagram) en el header, el hero, el favicon y la imagen de compartir.
+  El nombre y la marca de la M van más grandes, y el zócalo "Imprenta · Gráfica · Sellos"
+  se justifica contra el ancho del nombre.
+- Catálogo de fotos en cada servicio: una tira que se desliza con el dedo, y un visor a
+  pantalla completa al tocar una foto. Sin JavaScript el enlace abre la foto sola.
 - Call to action a WhatsApp: botón fijo, botón en el header y dos botones en la página.
 - El hero ya no tapa el contenido.
 - Open Graph y Twitter Card completos, con imagen 1200×630 propia. El sitio anterior no
@@ -22,8 +26,15 @@ en Córdoba capital. HTML, CSS y un archivo JS. Sin build, sin dependencias.
 
 ## Contenido
 
-Todos los textos y las fotos salen del sitio original. Solo se corrigieron tildes y
-erratas evidentes. No se inventó ningún dato.
+Todos los textos y las fotos de portada salen del sitio original. Solo se corrigieron
+tildes y erratas evidentes. No se inventó ningún dato.
+
+Las fotos del catálogo salen de la página pública de Facebook de Multimpresos. A cada
+una se le recortó el marco de la placa promocional, que llevaba el teléfono y la
+dirección viejos (351 4290749, Sucre 289). Las galerías del WordPress anterior no
+quedaron archivadas en Wayback, y el perfil de Instagram no se puede leer sin cuenta.
+
+Faltan fotos: ploteos no tiene ninguna, y gráfica e imprenta tienen una sola cada una.
 
 ## Estructura
 
@@ -32,6 +43,7 @@ index.html            página única
 assets/css/style.css  estilos
 assets/js/main.js     cierre del menú móvil y año del footer (el sitio anda sin JS)
 assets/img/           logo, favicons, imagen OG y fotos de cada servicio
+assets/img/catalogo/  fotos de trabajos, una tira por servicio
 ```
 
 ## Despliegue
