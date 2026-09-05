@@ -34,15 +34,17 @@ assets/js/main.js     cierre del menú móvil y año del footer (el sitio anda s
 assets/img/           logo, favicons, imagen OG y fotos de cada servicio
 ```
 
-## Mudanza al dominio propio
+## Despliegue
 
-Cuando `multimpresos.com.ar` apunte acá, reemplazar `https://fedesapuppo.github.io/multimpresos-web/`
-por `https://multimpresos.com.ar/` en:
+El sitio va al hosting que Multimpresos ya tiene en WNPower, reemplazando el
+WordPress que ocupaba `public_html`. No se toca el DNS.
 
-- `index.html`: `canonical`, `og:url`, `og:image`, `twitter:image` y el bloque JSON-LD
-- `robots.txt` y `sitemap.xml`
+El dominio no tiene registros MX. El mail de `info@multimpresos.com.ar` entra por
+MX implícito al mismo IP que sirve el sitio (52.44.154.118). Mover el registro A a
+otro hosting cortaría el correo, así que quedarse en WNPower lo evita.
 
-Después agregar un archivo `CNAME` con `multimpresos.com.ar` y configurar el DNS.
+`.htaccess` redirige con 301 las dos URLs del WordPress viejo que ya no existen:
+`/nosotros/` va a la home y `/contacto/` va a `/#contacto`.
 
 ## Desarrollo
 

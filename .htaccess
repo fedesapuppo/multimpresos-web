@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# El sitio viejo de WordPress tenia /nosotros/ y /contacto/ como paginas aparte.
+# Ahora es un one-pager, asi que redirigimos para no perder el posicionamiento.
+RewriteRule ^nosotros/?$ / [R=301,L]
+RewriteRule ^contacto/?$ /#contacto [R=301,L,NE]
