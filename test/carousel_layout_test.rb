@@ -15,4 +15,13 @@ class CarouselLayoutTest < Minitest::Test
     assert_operator script.index("prepararCarruselesDeServicios();"), :<,
                     script.index("document.querySelectorAll('.catalogo')")
   end
+
+  def test_omits_the_poor_carteleria_cover_from_the_carousel
+    index = File.read(File.expand_path("../index.html", __dir__))
+    carteleria = index.split('<article class="service service--flip" id="carteleria">').last
+                      .split("</article>").first
+
+    refute_includes carteleria, 'assets/img/carteleria.webp'
+    assert_includes carteleria, 'assets/img/catalogo/carteleria-1.webp'
+  end
 end
