@@ -29,12 +29,17 @@ en Córdoba capital. HTML, CSS y un archivo JS. Sin build, sin dependencias.
 Todos los textos y las fotos de portada salen del sitio original. Solo se corrigieron
 tildes y erratas evidentes. No se inventó ningún dato.
 
-Las fotos del catálogo salen de la página pública de Facebook de Multimpresos. A cada
-una se le recortó el marco de la placa promocional, que llevaba el teléfono y la
-dirección viejos (351 4290749, Sucre 289). Las galerías del WordPress anterior no
-quedaron archivadas en Wayback, y el perfil de Instagram no se puede leer sin cuenta.
+Las 33 fotos del catálogo salen de dos lugares. Veintiuna son las galerías del
+WordPress anterior, recuperadas del respaldo que quedó en la cuenta de WNPower
+(`/respaldo-wp-2026-09-05/wp-content/uploads/2020/07`). Wayback había archivado el HTML
+del sitio viejo pero ninguna de esas imágenes. Las otras doce salen de la página
+pública de Facebook, porque Instagram no se puede leer sin cuenta; a cada una se le
+recortó el marco de la placa promocional, que llevaba el teléfono y la dirección
+viejos (351 4290749, Sucre 289).
 
-Faltan fotos: ploteos no tiene ninguna, y gráfica e imprenta tienen una sola cada una.
+Cuidado con el origen: varias fotos del sitio anterior son de banco o maquetas, no
+trabajos propios, y las dos de ploteos son fotos de catálogo de la máquina. Conviene
+reemplazarlas cuando Javier mande fotos de trabajos reales.
 
 ## Estructura
 
