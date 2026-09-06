@@ -24,4 +24,9 @@ class CarouselLayoutTest < Minitest::Test
     refute_includes carteleria, 'assets/img/carteleria.webp'
     assert_includes carteleria, 'assets/img/catalogo/carteleria-1.webp'
   end
+
+  def test_removes_the_old_carteleria_cover_files
+    refute_path_exists File.expand_path("../assets/img/carteleria.webp", __dir__)
+    refute_path_exists File.expand_path("../assets/img/carteleria.jpg", __dir__)
+  end
 end
