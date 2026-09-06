@@ -21,6 +21,25 @@
   var ESPERA = 4500;
   var lento = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  function prepararCarruselesDeServicios() {
+    Array.prototype.forEach.call(document.querySelectorAll('.service'), function (servicio) {
+      var media = servicio.querySelector('.service__media');
+      var catalogo = servicio.querySelector('.catalogo');
+      if (!media || !catalogo) return;
+
+      var tira = catalogo.querySelector('.catalogo__strip');
+      var portada = media.querySelector('picture');
+      if (!tira || !portada) return;
+
+      var foto = document.createElement('li');
+      foto.appendChild(portada);
+      tira.insertBefore(foto, tira.firstChild);
+      media.appendChild(catalogo);
+    });
+  }
+
+  prepararCarruselesDeServicios();
+
   Array.prototype.forEach.call(document.querySelectorAll('.catalogo'), function (cat) {
     var tira = cat.querySelector('.catalogo__strip');
     var fotos = Array.prototype.slice.call(tira.children);

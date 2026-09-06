@@ -489,6 +489,13 @@ p { margin: 0 0 1em; }
   margin-top: 8px;
 }
 
+.service__media .catalogo {
+  max-width: none;
+  margin: 0;
+}
+
+.service__media .catalogo__head { display: none; }
+
 .catalogo__head {
   font-size: .78rem;
   letter-spacing: .14em;
@@ -524,6 +531,11 @@ p { margin: 0 0 1em; }
   object-fit: cover;
   border-radius: var(--radius-sm);
   background: var(--paper-2);
+}
+
+.service__media .catalogo__strip > li > picture img,
+.service__media .foto img {
+  border-radius: var(--radius);
 }
 
 .foto__pie {
