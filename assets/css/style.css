@@ -480,11 +480,12 @@ p { margin: 0 0 1em; }
   .service__media img { aspect-ratio: 16 / 10; }
 }
 
-/* ---------- Catálogo de fotos ---------- */
+/* ---------- Carrusel de fotos ---------- */
 
 .catalogo {
   grid-column: 1 / -1;
-  min-width: 0; /* si no, la tira de fotos estira la grilla del servicio */
+  min-width: 0; /* si no, el carrusel estira la grilla del servicio */
+  max-width: 620px;
   margin-top: 8px;
 }
 
@@ -496,99 +497,93 @@ p { margin: 0 0 1em; }
   margin-bottom: 14px;
 }
 
+/* Una foto por vez. Sin JavaScript se pasa con el dedo o la barra. */
 .catalogo__strip {
   list-style: none;
   margin: 0;
-  padding: 0 0 12px;
+  padding: 0;
   display: flex;
-  gap: 14px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   overscroll-behavior-x: contain;
   scrollbar-width: thin;
+  border-radius: var(--radius-sm);
 }
 
 .catalogo__strip > li {
-  flex: 0 0 clamp(210px, 26vw, 280px);
+  flex: 0 0 100%;
   scroll-snap-align: start;
 }
 
-.foto {
-  display: block;
-  text-decoration: none;
-  color: var(--text);
-}
+.foto { display: block; }
 
 .foto img {
+  display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: var(--radius-sm);
-  box-shadow: var(--shadow);
   background: var(--paper-2);
-  transition: transform .15s ease;
 }
-
-.foto:hover img { transform: translateY(-3px); }
 
 .foto__pie {
   display: block;
-  margin-top: 9px;
+  padding: 10px 2px 0;
   font-size: .87rem;
   font-weight: 600;
   line-height: 1.35;
 }
 
-/* Visor. Sin JavaScript el enlace abre la foto sola. */
-.visor {
-  border: 0;
-  padding: 0;
-  width: min(94vw, 1100px);
-  max-width: none;
-  max-height: 92dvh;
-  background: transparent;
-  color: #fff;
-  overflow: visible;
-}
-.visor::backdrop { background: rgba(14, 13, 53, .92); }
-
-.visor img {
-  display: block;
-  width: 100%;
-  max-height: 78dvh;
-  object-fit: contain;
-  border-radius: var(--radius-sm);
-  background: var(--ink);
-}
-
-.visor__pie {
-  margin: 12px 4px 0;
-  font-weight: 600;
-  text-align: center;
-}
-
-.visor__cerrar,
-.visor__nav {
-  position: absolute;
-  border: 0;
-  width: 46px;
-  height: 46px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .14);
-  color: #fff;
-  font-size: 1.5rem;
-  line-height: 1;
+/* Con JavaScript los puntos reemplazan a la barra y el clic pasa la foto. */
+.catalogo--js .catalogo__strip {
+  scrollbar-width: none;
   cursor: pointer;
 }
-.visor__cerrar:hover,
-.visor__nav:hover { background: rgba(255, 255, 255, .28); }
+.catalogo--js .catalogo__strip::-webkit-scrollbar { display: none; }
 
-.visor__cerrar,
-.visor__nav { background: rgba(14, 13, 53, .72); }
+.catalogo__ctrl {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+}
 
-.visor__cerrar { top: 10px; right: 10px; }
-.visor__nav--prev { left: 10px; top: calc(50% - 23px); }
-.visor__nav--next { right: 10px; top: calc(50% - 23px); }
+.catalogo__puntos {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}
+
+.catalogo__punto {
+  border: 0;
+  padding: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--line);
+  cursor: pointer;
+  transition: width .2s ease, background .2s ease;
+}
+
+.catalogo__punto[aria-current="true"] {
+  width: 24px;
+  background: var(--cyan);
+}
+
+.catalogo__pausa {
+  margin-left: auto;
+  border: 0;
+  background: none;
+  padding: 4px 6px;
+  font: inherit;
+  font-size: .76rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+.catalogo__pausa:hover { color: var(--text); }
 
 /* ---------- Franja WhatsApp ---------- */
 

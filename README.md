@@ -11,8 +11,10 @@ en Córdoba capital. HTML, CSS y un archivo JS. Sin build, sin dependencias.
 - Logo nuevo (el de Instagram) en el header, el hero, el favicon y la imagen de compartir.
   El nombre y la marca de la M van más grandes, y el zócalo "Imprenta · Gráfica · Sellos"
   se justifica contra el ancho del nombre.
-- Catálogo de fotos en cada servicio: una tira que se desliza con el dedo, y un visor a
-  pantalla completa al tocar una foto. Sin JavaScript el enlace abre la foto sola.
+- Carrusel de fotos en cada servicio: una foto por vez, avanza sola cada 4,5 segundos y
+  también con un toque o un clic. Los puntos marcan la posición y llevan a cualquier foto.
+  Se detiene con el botón Pausar, al pasar el mouse, al salir de pantalla y cuando el
+  sistema pide menos movimiento. Sin JavaScript la tira se pasa con el dedo o la barra.
 - Call to action a WhatsApp: botón fijo, botón en el header y dos botones en la página.
 - El hero ya no tapa el contenido.
 - Open Graph y Twitter Card completos, con imagen 1200×630 propia. El sitio anterior no
@@ -48,7 +50,7 @@ index.html            página única
 assets/css/style.css  estilos
 assets/js/main.js     cierre del menú móvil y año del footer (el sitio anda sin JS)
 assets/img/           logo, favicons, imagen OG y fotos de cada servicio
-assets/img/catalogo/  fotos de trabajos, una tira por servicio
+assets/img/catalogo/  fotos de trabajos, un carrusel por servicio
 ```
 
 ## Despliegue

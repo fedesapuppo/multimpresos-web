@@ -17,49 +17,160 @@
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
-  // Visor de fotos. Sin JavaScript el enlace abre la foto sola.
-  var fotos = Array.prototype.slice.call(document.querySelectorAll('.foto'));
-  if (!fotos.length || !window.HTMLDialogElement) return;
+  // Carrusel de fotos. Sin JavaScript se pasa con el dedo o la barra.
+  var ESPERA = 4500;
+  var lento = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  var visor = document.createElement('dialog');
-  visor.className = 'visor';
-  visor.innerHTML =
-    '<button class="visor__cerrar" type="button" aria-label="Cerrar">\u00d7</button>' +
-    '<button class="visor__nav visor__nav--prev" type="button" aria-label="Foto anterior">\u2039</button>' +
-    '<button class="visor__nav visor__nav--next" type="button" aria-label="Foto siguiente">\u203a</button>' +
-    '<img alt=""><p class="visor__pie"></p>';
-  document.body.appendChild(visor);
+  Array.prototype.forEach.call(document.querySelectorAll('.catalogo'), function (cat) {
+    var tira = cat.querySelector('.catalogo__strip');
+    var fotos = Array.prototype.slice.call(tira.children);
+    if (fotos.length < 2) return;
 
-  var img = visor.querySelector('img');
-  var pie = visor.querySelector('.visor__pie');
-  var actual = 0;
+    cat.classList.add('catalogo--js');
 
-  function mostrar(i) {
-    actual = (i + fotos.length) % fotos.length;
-    var foto = fotos[actual];
-    img.src = foto.getAttribute('href');
-    img.alt = foto.querySelector('img').alt;
-    pie.textContent = foto.querySelector('.foto__pie').textContent;
-  }
+    var actual = 0;
+    var reloj = null;
+    var quieto = false;
+    var visible = false;
+    var cargado = false;
+    var sync = null;
 
-  fotos.forEach(function (foto, i) {
-    foto.addEventListener('click', function (e) {
-      e.preventDefault();
-      mostrar(i);
-      visor.showModal();
+    var ctrl = document.createElement('div');
+    ctrl.className = 'catalogo__ctrl';
+
+    var lista = document.createElement('ul');
+    lista.className = 'catalogo__puntos';
+
+    var puntos = fotos.map(function (_, i) {
+      var li = document.createElement('li');
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'catalogo__punto';
+      b.setAttribute('aria-label', 'Foto ' + (i + 1) + ' de ' + fotos.length);
+      b.addEventListener('click', function () { ir(i); reiniciar(); });
+      li.appendChild(b);
+      lista.appendChild(li);
+      return b;
     });
-  });
 
-  visor.querySelector('.visor__cerrar').addEventListener('click', function () { visor.close(); });
-  visor.querySelector('.visor__nav--prev').addEventListener('click', function () { mostrar(actual - 1); });
-  visor.querySelector('.visor__nav--next').addEventListener('click', function () { mostrar(actual + 1); });
+    var pausa = document.createElement('button');
+    pausa.type = 'button';
+    pausa.className = 'catalogo__pausa';
 
-  visor.addEventListener('click', function (e) {
-    if (e.target === visor) visor.close();
-  });
+    ctrl.appendChild(lista);
+    ctrl.appendChild(pausa);
+    cat.appendChild(ctrl);
 
-  visor.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowLeft') mostrar(actual - 1);
-    if (e.key === 'ArrowRight') mostrar(actual + 1);
+    function marcar() {
+      puntos.forEach(function (b, i) {
+        if (i === actual) b.setAttribute('aria-current', 'true');
+        else b.removeAttribute('aria-current');
+      });
+    }
+
+    function ir(i, seco) {
+      actual = (i + fotos.length) % fotos.length;
+      tira.scrollTo({
+        left: fotos[actual].offsetLeft - fotos[0].offsetLeft,
+        behavior: seco ? 'auto' : 'smooth'
+      });
+      marcar();
+    }
+
+    // Las fotos siguientes quedan fuera de pantalla, hay que pedirlas antes.
+    function cargar() {
+      if (cargado) return;
+      cargado = true;
+      Array.prototype.forEach.call(tira.querySelectorAll('img[loading="lazy"]'), function (img) {
+        img.loading = 'eager';
+      });
+    }
+
+    function pintar() {
+      pausa.hidden = lento.matches;
+      pausa.textContent = quieto ? 'Reproducir' : 'Pausar';
+      pausa.setAttribute('aria-label', (quieto ? 'Reproducir' : 'Pausar') + ' las fotos');
+    }
+
+    function arrancar() {
+      if (reloj || quieto || !visible || lento.matches) return;
+      reloj = setInterval(function () { ir(actual + 1); }, ESPERA);
+    }
+
+    function parar() {
+      clearInterval(reloj);
+      reloj = null;
+    }
+
+    function reiniciar() {
+      if (!reloj) return;
+      parar();
+      arrancar();
+    }
+
+    pausa.addEventListener('click', function () {
+      quieto = !quieto;
+      if (quieto) parar(); else arrancar();
+      pintar();
+    });
+
+    // El clic o el toque pasa a la siguiente. Arrastrar sigue siendo arrastrar.
+    var desde = null;
+    tira.addEventListener('pointerdown', function (e) { desde = e.clientX; });
+    tira.addEventListener('pointercancel', function () { desde = null; });
+    tira.addEventListener('pointerup', function (e) {
+      if (desde !== null && Math.abs(e.clientX - desde) < 10) {
+        ir(actual + 1);
+        reiniciar();
+      }
+      desde = null;
+    });
+
+    tira.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); ir(actual - 1); reiniciar(); }
+      if (e.key === 'ArrowRight' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        ir(actual + 1);
+        reiniciar();
+      }
+    });
+
+    // Al pasar con el dedo o la barra, seguir el punto que corresponde.
+    tira.addEventListener('scroll', function () {
+      clearTimeout(sync);
+      sync = setTimeout(function () {
+        var paso = fotos[1].offsetLeft - fotos[0].offsetLeft;
+        if (paso > 0) {
+          actual = Math.min(fotos.length - 1, Math.round(tira.scrollLeft / paso));
+          marcar();
+        }
+      }, 120);
+    });
+
+    cat.addEventListener('mouseenter', parar);
+    cat.addEventListener('mouseleave', arrancar);
+    cat.addEventListener('focusin', parar);
+    cat.addEventListener('focusout', arrancar);
+
+    if (lento.addEventListener) {
+      lento.addEventListener('change', function () {
+        pintar();
+        if (lento.matches) parar(); else arrancar();
+      });
+    }
+
+    marcar();
+    pintar();
+
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (entradas) {
+        visible = entradas[0].isIntersecting;
+        if (visible) { cargar(); arrancar(); } else parar();
+      }, { threshold: .25 }).observe(tira);
+    } else {
+      visible = true;
+      cargar();
+      arrancar();
+    }
   });
 })();
