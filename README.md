@@ -31,7 +31,11 @@ en Córdoba capital. HTML, CSS y un archivo JS. Sin build, sin dependencias.
 Todos los textos y las fotos de portada salen del sitio original. Solo se corrigieron
 tildes y erratas evidentes. No se inventó ningún dato.
 
-Las 33 fotos del catálogo salen de dos lugares. Veintiuna son las galerías del
+La foto del cartel pastilla retroiluminado sale de un reel de Instagram
+(`instagram.com/p/DOMabCRASP6`), recortada a 4:3. Es un cuadro de video, así que entra
+a 640×480 y no a 1000×750 como el resto.
+
+Las otras 33 fotos del catálogo salen de dos lugares. Veintiuna son las galerías del
 WordPress anterior, recuperadas del respaldo que quedó en la cuenta de WNPower
 (`/respaldo-wp-2026-09-05/wp-content/uploads/2020/07`). Wayback había archivado el HTML
 del sitio viejo pero ninguna de esas imágenes. Las otras doce salen de la página
