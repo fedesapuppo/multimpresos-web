@@ -441,6 +441,8 @@ p { margin: 0 0 1em; }
 }
 .service:first-of-type { border-top: 0; }
 
+.service__media { min-width: 0; }
+
 .service--flip .service__media { order: 2; }
 
 .service__media img {

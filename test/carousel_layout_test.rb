@@ -29,4 +29,11 @@ class CarouselLayoutTest < Minitest::Test
     refute_path_exists File.expand_path("../assets/img/carteleria.webp", __dir__)
     refute_path_exists File.expand_path("../assets/img/carteleria.jpg", __dir__)
   end
+
+  def test_lets_the_media_column_shrink_below_its_carousel_min_content
+    css = File.read(File.expand_path("../assets/css/style.css", __dir__))
+    media = css[/^\.service__media \{(.*?)\}/m, 1]
+
+    assert_includes media, "min-width: 0"
+  end
 end
