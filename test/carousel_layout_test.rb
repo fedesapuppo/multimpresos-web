@@ -22,7 +22,7 @@ class CarouselLayoutTest < Minitest::Test
   end
 
   def test_shows_their_own_signage_work_in_the_carteleria_carousel
-    %w[carteleria-9 carteleria-10 carteleria-11].each do |foto|
+    %w[carteleria-9 carteleria-11].each do |foto|
       assert_includes carteleria_markup, "assets/img/catalogo/#{foto}.webp"
       assert_includes carteleria_markup, "assets/img/catalogo/#{foto}.jpg"
       assert_path_exists File.expand_path("../assets/img/catalogo/#{foto}.jpg", __dir__)
@@ -31,7 +31,7 @@ class CarouselLayoutTest < Minitest::Test
   end
 
   def test_drops_the_stock_photos_that_are_not_their_work
-    %w[carteleria-1 carteleria-2].each do |foto|
+    %w[carteleria-1 carteleria-2 carteleria-4 carteleria-5 carteleria-10].each do |foto|
       refute_includes carteleria_markup, "assets/img/catalogo/#{foto}."
     end
   end

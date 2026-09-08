@@ -50,10 +50,15 @@ recortó el marco de la placa promocional, que llevaba el teléfono y la direcci
 viejos (351 4290749, Sucre 289).
 
 Cuidado con el origen: varias fotos del sitio anterior son de banco o maquetas, no
-trabajos propios, y las dos de ploteos son fotos de catálogo de la máquina. Se
-descartaron las dos peores de cartelería (una máquina de banco y unos carteles de
-inmobiliaria extranjera). Quedan dos dudosas en ese carrusel, los roll ups y la
-vidriera de ferretería. Conviene reemplazarlas cuando Javier mande fotos propias.
+trabajos propios. Se descartaron las de cartelería que no eran de la imprenta (una
+máquina de banco, carteles de una inmobiliaria extranjera, unos roll ups en inglés
+y la vidriera de una ferretería italiana), una de las dos fotos de catálogo del
+plóter, y las repetidas: la segunda toma de la misma camioneta, dos montajes casi
+iguales de sellos de colores y una placa domiciliaria que estaba en homenajes y
+repetía la de cartelería.
+
+Quedan dudosas las tres primeras de gráfica y la primera de imprenta, que parecen
+maquetas de banco. Conviene reemplazarlas cuando Javier mande fotos propias.
 
 ## Estructura
 
