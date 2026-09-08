@@ -83,11 +83,17 @@
     document.body.appendChild(visor);
   }
 
+  // Se clona la foto de la página en vez de copiarle la URL: así el navegador
+  // resuelve webp o jpg igual que en el carrusel, esté cargada o no.
   function pintarVisor() {
     var foto = visorFotos[visorIndice];
-    var img = visor.querySelector('.visor__marco img');
-    img.src = foto.src;
-    img.alt = foto.alt;
+    var marco = visor.querySelector('.visor__marco');
+    var copia = foto.nodo.cloneNode(true);
+    var img = copia.tagName === 'IMG' ? copia : copia.querySelector('img');
+    img.loading = 'eager';
+    img.removeAttribute('width');
+    img.removeAttribute('height');
+    marco.replaceChild(copia, marco.querySelector('picture, img'));
     visor.querySelector('.visor__pie').textContent = foto.pie;
     visor.querySelector('.visor__cuenta').textContent = (visorIndice + 1) + ' de ' + visorFotos.length;
   }
@@ -142,7 +148,7 @@
     function detalle(li) {
       var img = li.querySelector('img');
       var pie = li.querySelector('.foto__pie');
-      return { src: img.currentSrc || img.src, alt: img.alt, pie: pie ? pie.textContent : img.alt };
+      return { nodo: li.querySelector('picture') || img, pie: pie ? pie.textContent : img.alt };
     }
 
     function abrir(i) {

@@ -58,4 +58,11 @@ class CarouselLayoutTest < Minitest::Test
 
     assert_includes css, ".visor[hidden] { display: none; }"
   end
+
+  def test_shows_the_same_picture_the_page_already_resolved
+    script = File.read(File.expand_path("../assets/js/main.js", __dir__))
+
+    assert_includes script, "cloneNode(true)"
+    refute_includes script, "currentSrc"
+  end
 end
