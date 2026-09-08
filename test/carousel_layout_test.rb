@@ -17,12 +17,23 @@ class CarouselLayoutTest < Minitest::Test
   end
 
   def test_omits_the_poor_carteleria_cover_from_the_carousel
-    index = File.read(File.expand_path("../index.html", __dir__))
-    carteleria = index.split('<article class="service service--flip" id="carteleria">').last
-                      .split("</article>").first
+    refute_includes carteleria_markup, 'assets/img/carteleria.webp'
+    assert_includes carteleria_markup, 'assets/img/catalogo/carteleria-8.webp'
+  end
 
-    refute_includes carteleria, 'assets/img/carteleria.webp'
-    assert_includes carteleria, 'assets/img/catalogo/carteleria-1.webp'
+  def test_shows_their_own_signage_work_in_the_carteleria_carousel
+    %w[carteleria-9 carteleria-10 carteleria-11].each do |foto|
+      assert_includes carteleria_markup, "assets/img/catalogo/#{foto}.webp"
+      assert_includes carteleria_markup, "assets/img/catalogo/#{foto}.jpg"
+      assert_path_exists File.expand_path("../assets/img/catalogo/#{foto}.jpg", __dir__)
+      assert_path_exists File.expand_path("../assets/img/catalogo/#{foto}.webp", __dir__)
+    end
+  end
+
+  def test_drops_the_stock_photos_that_are_not_their_work
+    %w[carteleria-1 carteleria-2].each do |foto|
+      refute_includes carteleria_markup, "assets/img/catalogo/#{foto}."
+    end
   end
 
   def test_removes_the_old_carteleria_cover_files
@@ -64,5 +75,12 @@ class CarouselLayoutTest < Minitest::Test
 
     assert_includes script, "cloneNode(true)"
     refute_includes script, "currentSrc"
+  end
+  private
+
+  def carteleria_markup
+    index = File.read(File.expand_path("../index.html", __dir__))
+    index.split('<article class="service service--flip" id="carteleria">').last
+         .split("</article>").first
   end
 end

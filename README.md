@@ -34,11 +34,14 @@ en Córdoba capital. HTML, CSS y un archivo JS. Sin build, sin dependencias.
 Todos los textos y las fotos de portada salen del sitio original. Solo se corrigieron
 tildes y erratas evidentes. No se inventó ningún dato.
 
-La foto del cartel pastilla retroiluminado sale de un reel de Instagram
-(`instagram.com/p/DOMabCRASP6`), recortada a 4:3. Es un cuadro de video, así que entra
-a 640×480 y no a 1000×750 como el resto.
+Cuatro fotos de cartelería salen del Instagram de Multimpresos: el cartel pastilla
+retroiluminado (`/p/DOMabCRASP6`), las dos del ploteo vehicular de Bausing
+(`/p/DT0Vij-kQk1`) y la placa domiciliaria en símil aluminio (`/p/DMdrm_kS2F1`).
+El cartel pastilla es un cuadro de video de baja resolución, así que entra a 640×480
+y no a 1000×750 como el resto. La placa es vertical y no da un recorte 4:3 sin cortar
+el marco, así que va centrada sobre una copia desenfocada de la misma foto.
 
-Las otras 33 fotos del catálogo salen de dos lugares. Veintiuna son las galerías del
+Las otras 32 fotos del catálogo salen de dos lugares. Veintiuna son las galerías del
 WordPress anterior, recuperadas del respaldo que quedó en la cuenta de WNPower
 (`/respaldo-wp-2026-09-05/wp-content/uploads/2020/07`). Wayback había archivado el HTML
 del sitio viejo pero ninguna de esas imágenes. Las otras doce salen de la página
@@ -47,8 +50,10 @@ recortó el marco de la placa promocional, que llevaba el teléfono y la direcci
 viejos (351 4290749, Sucre 289).
 
 Cuidado con el origen: varias fotos del sitio anterior son de banco o maquetas, no
-trabajos propios, y las dos de ploteos son fotos de catálogo de la máquina. Conviene
-reemplazarlas cuando Javier mande fotos de trabajos reales.
+trabajos propios, y las dos de ploteos son fotos de catálogo de la máquina. Se
+descartaron las dos peores de cartelería (una máquina de banco y unos carteles de
+inmobiliaria extranjera). Quedan dos dudosas en ese carrusel, los roll ups y la
+vidriera de ferretería. Conviene reemplazarlas cuando Javier mande fotos propias.
 
 ## Estructura
 
