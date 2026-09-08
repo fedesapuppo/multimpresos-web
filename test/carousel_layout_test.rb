@@ -36,4 +36,26 @@ class CarouselLayoutTest < Minitest::Test
 
     assert_includes media, "min-width: 0"
   end
+
+  def test_opens_the_tapped_photo_in_a_full_screen_viewer
+    script = File.read(File.expand_path("../assets/js/main.js", __dir__))
+
+    assert_includes script, "function abrirVisor("
+    assert_includes script, "aria-modal"
+  end
+
+  def test_closes_the_viewer_with_escape_and_walks_it_with_the_arrows
+    script = File.read(File.expand_path("../assets/js/main.js", __dir__))
+    visor = script.split("function abrirVisor(").last
+
+    assert_includes visor, "Escape"
+    assert_includes visor, "ArrowLeft"
+    assert_includes visor, "ArrowRight"
+  end
+
+  def test_hides_the_viewer_until_a_photo_is_tapped
+    css = File.read(File.expand_path("../assets/css/style.css", __dir__))
+
+    assert_includes css, ".visor[hidden] { display: none; }"
+  end
 end

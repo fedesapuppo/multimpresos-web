@@ -42,6 +42,89 @@
 
   prepararCarruselesDeServicios();
 
+  // Visor a pantalla completa: la foto grande sin salir de la página.
+  var visor = null;
+  var visorFotos = [];
+  var visorIndice = 0;
+  var visorVolver = null;
+  var visorAbierto = false;
+  var reanudadores = [];
+
+  function construirVisor() {
+    visor = document.createElement('div');
+    visor.className = 'visor';
+    visor.hidden = true;
+    visor.setAttribute('role', 'dialog');
+    visor.setAttribute('aria-modal', 'true');
+    visor.setAttribute('aria-label', 'Trabajos realizados');
+    visor.innerHTML =
+      '<button type="button" class="visor__cerrar" aria-label="Cerrar">\u2715</button>' +
+      '<button type="button" class="visor__paso" data-paso="-1" aria-label="Foto anterior">\u2039</button>' +
+      '<figure class="visor__marco"><img alt=""><figcaption class="visor__pie"></figcaption></figure>' +
+      '<button type="button" class="visor__paso" data-paso="1" aria-label="Foto siguiente">\u203a</button>' +
+      '<p class="visor__cuenta" aria-live="polite"></p>';
+
+    visor.addEventListener('click', function (e) {
+      var paso = e.target.closest('[data-paso]');
+      if (paso) { pasarVisor(Number(paso.getAttribute('data-paso'))); return; }
+      if (e.target.closest('.visor__cerrar') || e.target === visor) cerrarVisor();
+    });
+
+    var desde = null;
+    visor.addEventListener('pointerdown', function (e) { desde = e.clientX; });
+    visor.addEventListener('pointercancel', function () { desde = null; });
+    visor.addEventListener('pointerup', function (e) {
+      if (desde === null) return;
+      var corrido = e.clientX - desde;
+      desde = null;
+      if (Math.abs(corrido) > 40) pasarVisor(corrido < 0 ? 1 : -1);
+    });
+
+    document.body.appendChild(visor);
+  }
+
+  function pintarVisor() {
+    var foto = visorFotos[visorIndice];
+    var img = visor.querySelector('.visor__marco img');
+    img.src = foto.src;
+    img.alt = foto.alt;
+    visor.querySelector('.visor__pie').textContent = foto.pie;
+    visor.querySelector('.visor__cuenta').textContent = (visorIndice + 1) + ' de ' + visorFotos.length;
+  }
+
+  function pasarVisor(salto) {
+    visorIndice = (visorIndice + salto + visorFotos.length) % visorFotos.length;
+    pintarVisor();
+  }
+
+  function cerrarVisor() {
+    visorAbierto = false;
+    visor.hidden = true;
+    document.documentElement.style.overflow = '';
+    if (visorVolver) visorVolver.focus();
+    reanudadores.forEach(function (arrancar) { arrancar(); });
+  }
+
+  function abrirVisor(fotos, i, volver) {
+    if (!visor) construirVisor();
+    visorFotos = fotos;
+    visorIndice = i;
+    visorVolver = volver || null;
+    visorAbierto = true;
+    visor.hidden = false;
+    document.documentElement.style.overflow = 'hidden';
+    pintarVisor();
+    visor.querySelector('.visor__cerrar').focus();
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (!visorAbierto) return;
+    if (e.key === 'Escape') { e.preventDefault(); cerrarVisor(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); pasarVisor(-1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); pasarVisor(1); }
+  });
+
+
   Array.prototype.forEach.call(document.querySelectorAll('.catalogo'), function (cat) {
     var tira = cat.querySelector('.catalogo__strip');
     var fotos = Array.prototype.slice.call(tira.children);
@@ -55,6 +138,16 @@
     var visible = false;
     var cargado = false;
     var sync = null;
+
+    function detalle(li) {
+      var img = li.querySelector('img');
+      var pie = li.querySelector('.foto__pie');
+      return { src: img.currentSrc || img.src, alt: img.alt, pie: pie ? pie.textContent : img.alt };
+    }
+
+    function abrir(i) {
+      abrirVisor(fotos.map(detalle), i, tira);
+    }
 
     var ctrl = document.createElement('div');
     ctrl.className = 'catalogo__ctrl';
@@ -114,7 +207,7 @@
     }
 
     function arrancar() {
-      if (reloj || quieto || !visible || lento.matches) return;
+      if (reloj || quieto || !visible || lento.matches || visorAbierto) return;
       reloj = setInterval(function () { ir(actual + 1); }, ESPERA);
     }
 
@@ -135,25 +228,19 @@
       pintar();
     });
 
-    // El clic o el toque pasa a la siguiente. Arrastrar sigue siendo arrastrar.
+    // El clic o el toque abre la foto grande. Arrastrar sigue siendo arrastrar.
     var desde = null;
     tira.addEventListener('pointerdown', function (e) { desde = e.clientX; });
     tira.addEventListener('pointercancel', function () { desde = null; });
     tira.addEventListener('pointerup', function (e) {
-      if (desde !== null && Math.abs(e.clientX - desde) < 10) {
-        ir(actual + 1);
-        reiniciar();
-      }
+      if (desde !== null && Math.abs(e.clientX - desde) < 10) abrir(actual);
       desde = null;
     });
 
     tira.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowLeft') { e.preventDefault(); ir(actual - 1); reiniciar(); }
-      if (e.key === 'ArrowRight' || e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        ir(actual + 1);
-        reiniciar();
-      }
+      if (e.key === 'ArrowRight') { e.preventDefault(); ir(actual + 1); reiniciar(); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(actual); }
     });
 
     // Al pasar con el dedo o la barra, seguir el punto que corresponde.
@@ -179,6 +266,8 @@
         if (lento.matches) parar(); else arrancar();
       });
     }
+
+    reanudadores.push(arrancar);
 
     marcar();
     pintar();
